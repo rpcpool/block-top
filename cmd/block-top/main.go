@@ -13,7 +13,7 @@ import (
 	"github.com/gagliardetto/solana-go/rpc/jsonrpc"
 )
 
-const defaultRPC = "http://sfo3.rpcpool.wg"
+const defaultRPC = "http://localhost:8899"
 
 var (
 	flagAddr    = flag.String("addr", defaultRPC, "RPC address")
@@ -71,6 +71,7 @@ func main() {
 			}
 
 			if current_slot < slot {
+				log.Println("checking_slot=", current_slot, "get_slot=", slot)
 				if len(watched_leaders) == 0 || watched_leaders.Has(leader_slots[current_slot]) {
 					block, err := client.GetBlock(context.TODO(), current_slot)
 					if err != nil {
@@ -97,7 +98,7 @@ func main() {
 				log.Println("waiting for new slot")
 			}
 
-			time.Sleep(1 * time.Second)
+			time.Sleep(400 * time.Millisecond)
 		}
 	}
 }
