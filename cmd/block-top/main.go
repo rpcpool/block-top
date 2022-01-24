@@ -76,8 +76,16 @@ func main() {
 					block, err := client.GetBlock(context.TODO(), current_slot)
 					if err != nil {
 						var rpcErr *jsonrpc.RPCError
-						if errors.As(err, &rpcErr) && (rpcErr.Code == -32007 /* SLOT_SKIPPED */ || rpcErr.Code == -32004 /* BLOCK_NOT_AVAILABLE */) {
-							fmt.Printf("leader=%s slot=%d skipped=true\n", leader_slots[current_slot].String(), current_slot)
+						if errors.As(err, &rpcErr) {
+							if rpcErr.Code == -32007 /* SLOT_SKIPPED */ {
+								fmt.Printf("leader=%s slot=%d skipped=true\n", leader_slots[current_slot].String(), current_slot)
+								continue
+							} else if rpcErr.Code == -32004 /* BLOCK_NOT_AVAILABLE */ {
+								// assuming this is because we're too much ahead
+								log.Println("error fetching block (probably not visible in rpc yet):", err)
+								time.Sleep(250 * time.Millisecond)
+								continue
+							}
 						} else {
 							log.Println("error fetching block:", err)
 							time.Sleep(250 * time.Millisecond)
