@@ -27,7 +27,7 @@ var (
 )
 
 func main() {
-	flag.Var(&flagLeaders, "leader", "Leader to watch, if none provided, watch all")
+	flag.Var(&flagLeaders, "leader", "Leader(s) to watch, if none provided, watch all")
 	flag.Parse()
 
 	client = rpc.New(*flagAddr)
@@ -77,7 +77,7 @@ func main() {
 					if err != nil {
 						var rpcErr *jsonrpc.RPCError
 						if errors.As(err, &rpcErr) && (rpcErr.Code == -32007 /* SLOT_SKIPPED */ || rpcErr.Code == -32004 /* BLOCK_NOT_AVAILABLE */) {
-							log.Printf("leader=%s slot=%d skipped=true\n", leader_slots[current_slot].String(), current_slot)
+							fmt.Printf("leader=%s slot=%d skipped=true\n", leader_slots[current_slot].String(), current_slot)
 						} else {
 							log.Println("error fetching block:", err)
 							time.Sleep(250 * time.Millisecond)
