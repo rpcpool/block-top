@@ -71,7 +71,7 @@ func main() {
 			}
 
 			if current_slot < slot {
-				log.Println("checking_slot=", current_slot, "get_slot=", slot)
+				log.Println("checking_slot=", current_slot, "get_slot=", slot, "leader=", leader_slots[current_slot].String())
 				if len(watched_leaders) == 0 || watched_leaders.Has(leader_slots[current_slot]) {
 					block, err := client.GetBlock(context.TODO(), current_slot)
 					if err != nil {

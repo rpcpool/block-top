@@ -22,4 +22,7 @@ Built on code from https://github.com/certusone/tpuproxy/blob/main/cmd/txcount/.
 `go run ./cmd/block-top -leader DDnAqxJVFo2GVTujibHt5cjevHMSE9bo8HJaydHoshdp -leader Certusm1sa411sMpV9FPqU5dXAYhmmhygvxJ23S6hJ24`  
 
 
+Pipe stderr to `/dev/null` to hide debug output.
+
+
 
